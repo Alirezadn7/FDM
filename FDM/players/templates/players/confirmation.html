@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تایید حذف</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Open Sans', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; }
+        .container { max-width: 500px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); padding: 40px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; text-align: center; }
+        h1 { color: #dc3545; }
+        p { font-size: 1.1rem; }
+        .obj-display { background: #333; padding: 15px; border-radius: 5px; margin: 20px 0; font-weight: 600; border: 1px solid #555; }
+        .confirm-actions { margin-top: 30px; }
+        button, a { text-decoration: none; padding: 12px 25px; border-radius: 5px; color: white; margin: 0 10px; font-size: 1rem; font-weight: 600; transition: all 0.3s; }
+        button { background-color: #dc3545; border: none; cursor: pointer; }
+        button:hover { background-color: #c82333; }
+        a { background-color: #6c757d; }
+        a:hover { background-color: #5a6268; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>تایید حذف</h1>
+        <p>آیا از حذف آیتم زیر مطمئن هستید؟ این عملیات غیرقابل بازگشت است.</p>
+        
+        <div class="obj-display">"{{ obj }}"</div>
+
+        <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <div class="confirm-actions">
+                <button type="submit">بله، حذف کن</button>
+                <a href="{% url 'show_url' %}">خیر، انصراف</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

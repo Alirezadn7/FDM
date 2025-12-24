@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>داشبورد بازیکنان</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+        .main-actions {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .main-actions a {
+            text-decoration: none;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+        .main-actions a:hover {
+            background-color: #218838;
+        }
+        .player-card {
+            background: rgba(42, 42, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+        .player-header h2 { margin: 0; color: #28a745; }
+        .actions a {
+            margin-right: 10px;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+        .actions a:hover { transform: scale(1.1); }
+        .edit-btn { background-color: #ffc107; color: #333; }
+        .delete-btn { background-color: #dc3545; }
+        .stats-list { list-style: none; padding-right: 0; }
+        .stats-list li {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+        .stats-list a { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>داشبورد بازیکنان</h1>
+        <div class="main-actions">
+            <a href="{% url 'player_form_url' %}">افزودن بازیکن</a>
+            <a href="{% url 'stats_form_url' %}">افزودن آمار</a>
+        </div>
+        <hr style="border-color: rgba(255, 255, 255, 0.2);">
+
+        {% for player in players %}
+            <div class="player-card">
+                <div class="player-header">
+                    <h2>{{ player.fname }} {{ player.lname }} <span style="font-size: 1rem; color: #ccc;">(سن: {{ player.age }})</span></h2>
+                    <div class="actions">
+                        <a class="edit-btn" href="{% url 'player_update_url' player.pid %}">ویرایش</a>
+                        <a class="delete-btn" href="{% url 'player_delete_url' player.pid %}">حذف</a>
+                    </div>
+                </div>
+                <p>قد: {{ player.height }}</p>
+
+                <h4>آمار:</h4>
+                <ul class="stats-list">
+                    {% for stat in stats %}
+                        {% if stat.player.pid == player.pid %}
+                            <li>
+                                <strong>تیم:</strong> {{ stat.team }} | <strong>پست:</strong> {{ stat.position }} | <strong>گل‌ها:</strong> {{ stat.goals }} | <strong>امتیاز:</strong> {{ stat.rating }}
+                                <a href="{% url 'stats_update_url' stat.id %}"> (ویرایش)</a>
+                                <a href="{% url 'stats_delete_url' stat.id %}" style="color: #dc3545;"> (حذف)</a>
+                            </li>
+                        {% endif %}
+                    {% empty %}
+                     <li>آماری برای این بازیکن ثبت نشده است.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% empty %}
+            <p style="text-align: center;">هیچ بازیکنی برای نمایش وجود ندارد.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
